@@ -1,155 +1,142 @@
-# AGROSMART (Versão Simplificada)
+# AGROSMART (Sistema de Gestão Agrícola Inteligente)
 
 ## Descrição
 
-**AgroSmart** é um sistema simplificado de gestão agrícola construído com backend em Python Flask (com suporte a Socket.IO) e frontend em React. Recolhe dados meteorológicos em tempo real através da API OpenWeatherMap e fornece recomendações de irrigação baseadas nas condições meteorológicas atuais.
+**AgroSmart** é um sistema inteligente de gestão agrícola focado em viticultura, construído com backend em Python Flask e frontend em React. O sistema recolhe dados meteorológicos em tempo real via API OpenWeatherMap e fornece recomendações de irrigação baseadas em análise contínua das condições meteorológicas.
 
-## Funcionalidades
+## Funcionalidades Principais
 
-- **Monitorização Meteorológica:** Recolha automática de dados meteorológicos (temperatura, humidade, precipitação)
-- **Recomendações Inteligentes:** Sugestões de irrigação baseadas em dados meteorológicos
-- **Armazenamento JSON Simples:** Armazenamento de dados local baseado em ficheiros
-- **API REST:** Endpoints simples para integração
-- **Interface React:** Interface web moderna e responsiva
-- **Sistema de Registos:** Registos detalhados do sistema para monitorização
-- **Atualização em tempo real:** O frontend recebe atualizações automáticas via Socket.IO sempre que há novos dados meteorológicos
+- **Monitorização em Tempo Real:** 
+  - Temperatura e humidade atualizadas a cada 5 minutos
+  - Notificações automáticas de condições críticas
+  - Histórico de dados meteorológicos
+
+- **Recomendações Inteligentes:**
+  - Análise automática de condições para viticultura
+  - Sugestões de irrigação personalizadas
+  - Alertas de riscos (doenças fúngicas, stress térmico)
+
+- **Segurança:**
+  - Autenticação básica para todas as rotas da API
+  - Proteção de dados sensíveis
+  - Gestão de sessões de usuário
+
+- **Interface Moderna:**
+  - Dashboard interativo em React
+  - Atualizações em tempo real via WebSocket
+  - Design responsivo e intuitivo
+
+## Requisitos do Sistema
+
+### Backend
+- Python 3.10+
+- Flask 2.0.1
+- Flask-SocketIO 5.1.1
+- Outras dependências em `backend/requirements.txt`
+
+### Frontend
+- Node.js 14+
+- React 17
+- TypeScript 4.9+
+- Dependências listadas em `frontend/package.json`
+
+## Configuração Rápida
+
+### 1. Backend (Python/Flask)
+
+```bash
+# Clone o repositório
+git clone https://github.com/Folha14/AGROSMART.git
+cd AGROSMART/backend
+
+# Crie e ative o ambiente virtual
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+
+# Instale as dependências
+pip install -r requirements.txt
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+# Edite .env com sua chave API do OpenWeatherMap
+
+# Execute o servidor
+python app.py
+```
+
+### 2. Frontend (React/TypeScript)
+
+```bash
+# Na pasta do frontend
+cd ../frontend
+
+# Instale as dependências
+npm install
+
+# Execute em modo desenvolvimento
+npm start
+```
 
 ## Estrutura do Projeto
 
 ```
 AGROSMART/
 │
-├── backend/                # Backend Flask
+├── backend/                
 │   ├── app.py             # Aplicação Flask principal
 │   ├── src/
-│   │   ├── services/      # Lógica de negócio
-│   │   │   ├── weather_service.py
-│   │   │   └── recomendacao_service.py
-│   │   ├── storage/       # Armazenamento de dados
-│   │   │   └── data_store.py
+│   │   ├── services/      # Serviços de negócio
+│   │   ├── storage/       # Gestão de dados
 │   │   └── utils/         # Utilitários
-│   │       └── logger.py
-│   ├── data/              # Diretório de armazenamento JSON
-│   └── requirements.txt   # Dependências Python
+│   ├── data/              # Armazenamento JSON
+│   └── tests/             # Testes unitários
 │
-├── frontend/               # Frontend React
-│   ├── public/
+├── frontend/              
 │   ├── src/
-│   │   ├── components/
-│   │   ├── services/
-│   │   ├── pages/
-│   │   └── App.tsx
-│   ├── package.json
-│   └── tsconfig.json
+│   │   ├── components/    # Componentes React
+│   │   ├── services/      # Serviços API
+│   │   ├── pages/         # Páginas principais
+│   │   └── types/         # Tipos TypeScript
+│   └── public/
 │
-├── .env                    # Variáveis de ambiente
-└── README.md               # Este ficheiro
+└── docs/                  # Documentação adicional
 ```
 
-## Configuração e Execução
+## API Endpoints
 
-### 1. Configuração do Backend
+| Método | Endpoint | Descrição | Autenticação |
+|--------|----------|-----------|--------------|
+| POST | `/api/login` | Autenticação de usuário | Não |
+| GET | `/api/weather` | Dados meteorológicos atuais | Sim |
+| GET | `/api/recommendations` | Recomendações de irrigação | Sim |
+| GET | `/api/history/weather` | Histórico meteorológico | Sim |
+| GET | `/api/notifications` | Notificações ativas | Sim |
+| DELETE | `/api/notifications` | Limpar notificações | Sim |
 
-1. Navegue para o diretório backend:
-    ```sh
-    cd backend
-    ```
+## WebSocket Events
 
-2. Crie o ambiente virtual e instale as dependências:
-    ```sh
-    python -m venv venv
-    venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
+- `weather_update`: Recebe atualizações meteorológicas em tempo real
+- `notification`: Recebe novas notificações
 
-3. Copie `.env.example` para `.env` e preencha a chave API do OpenWeatherMap:
-    ```sh
-    copy .env.example .env
-    ```
+## Contribuições
 
-4. **Instale o Flask-SocketIO e eventlet** (necessário para WebSocket funcionar):
-    ```sh
-    pip install flask-socketio eventlet
-    ```
-
-5. Execute o backend **usando o socketio.run** (não use `flask run`):
-    ```sh
-    python app.py
-    ```
-
-    O backend estará disponível em [http://localhost:5000](http://localhost:5000)
-
-### 2. Configuração do Frontend
-
-1. Navegue para o diretório frontend:
-    ```sh
-    cd frontend
-    ```
-
-2. Instale as dependências:
-    ```sh
-    npm install
-    ```
-
-3. Execute o servidor de desenvolvimento React:
-    ```sh
-    npm start
-    ```
-
-    O frontend estará disponível em [http://localhost:3000](http://localhost:3000)
-
-### 3. Comunicação em Tempo Real (Socket.IO)
-
-- O backend já está configurado para emitir eventos `weather_update` via Socket.IO.
-- No frontend, o componente `Weather.tsx` deve usar o pacote `socket.io-client` para receber atualizações em tempo real.
-- Certifique-se de instalar o pacote no frontend:
-    ```sh
-    npm install socket.io-client
-    ```
-- Exemplo de uso no React:
-    ```tsx
-    import { io } from "socket.io-client";
-    const socket = io("http://localhost:5000", { transports: ["websocket"] });
-    socket.on("weather_update", (data) => {
-        // Atualize o estado do componente com os novos dados
-    });
-    ```
-
-## Endpoints da API
-
-- `GET /api/weather` - Obter dados meteorológicos atuais
-- `GET /api/recommendations` - Obter recomendações de irrigação
-- `GET /api/history/weather` - Obter histórico meteorológico
-- `GET /api/notifications` - Obter notificações
-- `DELETE /api/notifications` - Limpar notificações
-
-## Tecnologias Utilizadas
-
-Backend:
-- Python 3.10+
-- Flask
-- Flask-SocketIO
-- Requests (para chamadas API)
-- JSON (para armazenamento de dados)
-- eventlet (para WebSocket)
-
-Frontend:
-- React 18
-- TypeScript
-- Material-UI
-- Axios
-- socket.io-client
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add: nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
 ## Equipa
 
-- Guilherme Mota
-- Diogo A.
-- José Folha
+- Guilherme Mota - Backend/DevOps
+- Diogo A. - Frontend/UX
+- José Folha - Backend/DevOps
 
 ## Licença
 
-Este projeto é apenas para fins académicos.
+Este projeto é apenas para fins académicos e não pode ser usado comercialmente.
 
 ---
 
-> **Nota:** Lembre-se de atualizar a sua chave API do OpenWeatherMap no ficheiro `.env`.
+> **Nota:** Este projeto é parte de um trabalho académico e está em constante desenvolvimento.
