@@ -48,7 +48,6 @@ export async function fetchHistory(token: string) {
     return response.data;
 }
 
-// Add to frontend/src/services/api.ts
 
 export interface ContactFormData {
     name: string;
