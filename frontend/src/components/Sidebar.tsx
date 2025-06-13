@@ -1,3 +1,4 @@
+// frontend/src/components/Sidebar.tsx
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -13,6 +14,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         history.push('/contact');
     };
 
+    const navigateToProfile = () => {
+        history.push('/profile');
+    };
+
     return (
         <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
             <button onClick={toggleSidebar}>
@@ -20,6 +25,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             </button>
             <nav>
                 <ul>
+                    <li onClick={navigateToProfile} style={{ cursor: 'pointer' }}>
+                        Perfil
+                    </li>
                     <li>Recomendações</li>
                     <li>Notificações</li>
                     <li>Meteorologia</li>
