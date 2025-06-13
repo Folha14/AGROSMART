@@ -114,8 +114,6 @@ tr:nth-child(even) {
   background: #f7fafc;
 }
 
-/* Contact Page Styles - Add to App.css */
-
 .contact-page {
   min-height: 100vh;
   background: #f6f8fa;
