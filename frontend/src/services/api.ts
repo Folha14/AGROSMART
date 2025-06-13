@@ -47,3 +47,29 @@ export async function fetchHistory(token: string) {
     });
     return response.data;
 }
+
+// Add to frontend/src/services/api.ts
+
+export interface ContactFormData {
+    name: string;
+    email: string;
+    phone: string;
+    subject: string;
+    message: string;
+}
+
+export async function submitContactForm(formData: ContactFormData, token?: string) {
+    const headers: any = {
+        'Content-Type': 'application/json',
+    };
+    
+    if (token) {
+        headers['Authorization'] = `Basic ${token}`;
+    }
+
+    const response = await axios.post(`${API_URL}/contact`, formData, {
+        headers
+    });
+    
+    return response.data;
+}

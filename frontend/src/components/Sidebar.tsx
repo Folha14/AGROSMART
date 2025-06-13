@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -6,6 +7,12 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+    const history = useHistory();
+
+    const navigateToContact = () => {
+        history.push('/contact');
+    };
+
     return (
         <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
             <button onClick={toggleSidebar}>
@@ -17,6 +24,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                     <li>Notificações</li>
                     <li>Meteorologia</li>
                     <li>Histórico</li>
+                    <li onClick={navigateToContact} style={{ cursor: 'pointer' }}>
+                        Contacto
+                    </li>
                 </ul>
             </nav>
         </aside>
